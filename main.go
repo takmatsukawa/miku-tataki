@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	_ "embed"
 	"image"
 	_ "image/png"
 
@@ -9,13 +10,11 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-
-	"github.com/hajimehoshi/ebiten/v2/examples/resources/images"
 )
 
 const (
-	screenWidth  = 320
-	screenHeight = 240
+	screenWidth  = 420
+	screenHeight = 320
 
 	frameOX     = 0
 	frameOY     = 32
@@ -42,17 +41,22 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(-float64(frameWidth)/2, -float64(frameHeight)/2)
 	op.GeoM.Translate(screenWidth/2, screenHeight/2)
-	i := (g.count / 5) % frameCount
-	sx, sy := frameOX+i*frameWidth, frameOY
-	screen.DrawImage(mikuImage.SubImage(image.Rect(sx, sy, sx+frameWidth, sy+frameHeight)).(*ebiten.Image), op)
+	// i := (g.count / 5) % frameCount
+	// sx, sy := frameOX+i*frameWidth, frameOY
+	// screen.DrawImage(mikuImage.SubImage(image.Rect(sx, sy, sx+frameWidth, sy+frameHeight)).(*ebiten.Image), op)
+	screen.DrawImage(mikuImage.SubImage(image.Rect(0, 0, 110, 150)).(*ebiten.Image), op)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
 
+//go:embed resources/images/body4.png
+var body []byte
+
 func main() {
-	img, _, err := image.Decode(bytes.NewReader(images.Runner_png))
+
+	img, _, err := image.Decode(bytes.NewReader(body))
 	if err != nil {
 		log.Fatal(err)
 	}
